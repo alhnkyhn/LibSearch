@@ -1,0 +1,28 @@
+<ion-header>
+    <ion-navbar color="secondary">
+    <ion-title>Anasayfa</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+
+  <ion-item> 
+    Hoşgeldiniz  {{temp1}}
+  </ion-item>
+
+   <form id="page-form3">
+    <button (click) = "navigateToApplicationPage()" id="page-button5" ion-button color="positive" block large icon-left style="border-radius:15px 15px 15px 15px;" >
+      <ion-icon name="person"></ion-icon>
+      Başvuru İşlemleri
+    </button><button (click) = "navigateToApplicationDetailPage()" id="page-button5" ion-button color="positive" block large icon-left style="border-radius:15px 15px 15px 15px;" >
+      <ion-icon name="person"></ion-icon>
+      Başvuru Durumu Görüntüleme
+    </button>
+    <button (click) = "navigateToSearchPage()" id="page-button6" ion-button color="positive" block large icon-left style="border-radius:15px 15px 15px 15px;">
+      <ion-icon name="book"></ion-icon>
+      Kitap Sorgulama
+    </button>
+  </form>
+
+</ion-content>

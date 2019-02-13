@@ -1,0 +1,7 @@
+{
+  "name": "bitirme",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

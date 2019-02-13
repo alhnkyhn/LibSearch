@@ -1,0 +1,23 @@
+<!--
+  Generated template for the ApplicationDetailPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Başvuru Durumu Görüntüleme</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+<div *ngFor = "let item of result">
+ <ion-item *ngIf =" item?.length > 1">
+	 {{item}}
+</ion-item>
+</div>
+
+</ion-content>

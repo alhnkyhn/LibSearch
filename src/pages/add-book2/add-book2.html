@@ -1,0 +1,214 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Eser Ekle</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-item> 
+    <ion-label floating>Eserin Türü</ion-label>
+    <ion-select [(ngModel)]="typeOfWork" (ionChange)="typeChooser(typeOfWork)">
+      <ion-option value="yazmaEser">El Yazması Eser</ion-option>
+      <ion-option value="kitap">Kitap</ion-option>
+      <ion-option value="sureliYayin">Süreli Yayın</ion-option>
+    </ion-select>
+  </ion-item>
+
+<ion-list> <!-- El yazması Eserleri formu-->
+  <div class="form-standarts" *ngIf="handmadeWorkController" > 
+     <ion-item id="page2-input4">
+
+      <ion-label floating>Eserin İsmi</ion-label>
+      <ion-input [(ngModel)]="datasOfBook.nameOfWork" type="text"></ion-input>
+    </ion-item>
+    <ion-item id="page2-input6">
+       <ion-label floating> Eserin Yazarı</ion-label>
+      <ion-input [(ngModel)]="datasOfBook.writerOfWork" type="text" placeholder=""></ion-input>
+    </ion-item>
+    <ion-item id="page2-input5">
+       <ion-label floating>Eserin Yazılma Tarihi</ion-label>
+      <ion-datetime [(ngModel)]="datasOfBook.dateOfWork" displayFormat="YYYY"></ion-datetime>
+    </ion-item>
+    <ion-item id="page2-select1">
+       <ion-label floating>Eserin Dili</ion-label>
+      <ion-select [(ngModel)]="datasOfBook.languageOfWork" name="">
+        <ion-option>Türkçe</ion-option>
+        <ion-option>Almanca</ion-option>
+        <ion-option>Arapça</ion-option>
+        <ion-option>Farsça</ion-option>
+        <ion-option>Fransızca</ion-option>
+        <ion-option>Osmanlıca</ion-option>
+        <ion-option>Rusça</ion-option>
+        <ion-option>İngilizce</ion-option>
+        <ion-option>İtalyanca</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item id="page2-input7">
+       <ion-label floating>Eğer Varsa Eserin Çevirmeni</ion-label>
+      <ion-input [(ngModel)]="datasOfBook.translatorOfWork" type="text" placeholder=""></ion-input>
+    </ion-item>
+    <ion-item>
+    <ion-label >Eser kütüphane dışına çıkartılabilir mi?</ion-label>
+    <ion-toggle [(ngModel)]="datasOfBook.canBeTake"></ion-toggle>
+  </ion-item>
+  <ion-item>
+    <ion-label >Eser kütüphane içinde görülebilir mi?</ion-label>
+    <ion-toggle [(ngModel)]="datasOfBook.canBeShow"></ion-toggle>
+  </ion-item>
+
+  <button id="page2-button8" ion-button (click)="saveItToDatabase(datasOfBook, '001')" color="positive" block>
+    Kaydet
+  </button>
+
+
+  </div>
+</ion-list>
+
+<ion-list>
+  <div class="form-standarts" *ngIf="bookController" >
+
+    <ion-item >
+      <ion-label floating>Kitabın İsmi</ion-label>
+      <ion-input [(ngModel)]="datasOfBook.nameOfBook" type="text"></ion-input>
+    </ion-item>
+
+    <ion-item >
+       <ion-label floating> Kitabın Yazarı</ion-label>
+      <ion-input [(ngModel)]="datasOfBook.writerOfBook" type="text" placeholder=""></ion-input>
+    </ion-item>
+
+     <ion-item>
+        <ion-label floating>Kitabın Türü</ion-label>
+        <ion-select [(ngModel)]="datasOfBook.typeOfBook" name="">
+          <ion-option value="01">Roman</ion-option>
+          <ion-option value="02">Anı</ion-option>
+          <ion-option value="03">Araştırma-İnceleme</ion-option>
+          <ion-option value="04">Bilim</ion-option>
+          <ion-option value="05">Biyografi</ion-option>
+          <ion-option value="06">Deneme</ion-option>
+          <ion-option value="07">Edebiyat</ion-option>
+          <ion-option value="08">Felsefe</ion-option>
+          <ion-option value="09">Gençlik</ion-option>
+          <ion-option value="10">Hikaye</ion-option>
+          <ion-option value="11">Masal</ion-option>
+          <ion-option value="12">Mektup</ion-option>
+          <ion-option value="13">Mizah</ion-option>
+          <ion-option value="14">Saglık</ion-option>
+          <ion-option value="15">Sanat - Tasarım</ion-option>
+          <ion-option value="16">Sanat - Müzik</ion-option>
+          <ion-option value="17">SinemaTarihi</ion-option>
+          <ion-option value="18">Tarih</ion-option>
+          <ion-option value="19">Yemek Kitapları</ion-option>
+          <ion-option value="20">Öykü</ion-option>
+          <ion-option value="21">İnceleme</ion-option>
+          <ion-option value="22">Şiir</ion-option> 
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+       <ion-label floating>Kitabın Yazılma Tarihi</ion-label>
+      <ion-datetime [(ngModel)]="datasOfBook.dateOfBook" displayFormat="YYYY"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Kitabın Dili</ion-label>
+      <ion-select [(ngModel)]="datasOfBook.languageOfBook" name="">
+        <ion-option>Türkçe</ion-option>
+        <ion-option>Almanca</ion-option>
+        <ion-option>Arapça</ion-option>
+        <ion-option>Farsça</ion-option>
+        <ion-option>Fransızca</ion-option>
+        <ion-option>Osmanlıca</ion-option>
+        <ion-option>Rusça</ion-option>
+        <ion-option>İngilizce</ion-option>
+        <ion-option>İtalyanca</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+       <ion-label floating>Eğer Varsa Kitabın Çevirmeni</ion-label>
+      <ion-input [(ngModel)]="datasOfBook.translatorOfBook" type="text" placeholder=""></ion-input>
+    </ion-item>
+
+    <ion-item>
+       <ion-label floating> Kitabın Sayfa Sayısı</ion-label>
+      <ion-input [(ngModel)]="datasOfBook.pageNumberOfBook" type="text" placeholder=""></ion-input>
+    </ion-item>
+
+    <ion-item>
+    <ion-label >Kitap kütüphane dışına çıkartılabilir mi?</ion-label>
+    <ion-toggle [(ngModel)]="datasOfBook.canBeTake"></ion-toggle>
+  </ion-item>
+
+  <ion-item>
+    <ion-label >Kitap kütüphane içinde görülebilir mi?</ion-label>
+    <ion-toggle [(ngModel)]="datasOfBook.canBeShow"></ion-toggle>
+  </ion-item>
+
+  <button ion-button (click)="saveItToDatabase(datasOfBook, '002')" color="positive" block>
+    Kaydet
+  </button>
+
+  </div> <!-- Kitap formu --><!-- Kitap formu -->
+</ion-list>
+
+
+<ion-list> <!-- Süreli Eserler formu-->
+  <div class="form-standarts" *ngIf="publishingController" >
+    <ion-item id="page2-input4">
+      <ion-label floating>Süreli Yayının İsmi</ion-label>
+      <ion-input [(ngModel)]="datasOfPublisher.nameOfPublishing" type="text"></ion-input>
+    </ion-item>
+    <ion-item id="page2-input6">
+       <ion-label floating> Yayımlayan yayınevi</ion-label>
+      <ion-input [(ngModel)]="datasOfPublisher.nameOfPublisher" type="text" placeholder=""></ion-input>
+    </ion-item>
+    <ion-item id="page2-input6">
+       <ion-label floating> Süreli Yayının kaçıncı sayısı</ion-label>
+      <ion-input [(ngModel)]="datasOfPublisher.numberOfPublishing" type="text" placeholder=""></ion-input>
+    </ion-item>
+    <ion-item id="page2-input5">
+       <ion-label floating>Süreli Yayının Yayımlanma Tarihi</ion-label>
+      <ion-datetime [(ngModel)]="datasOfPublisher.dateOfPublishing" displayFormat="MM/YYYY"></ion-datetime>
+    </ion-item>
+    <ion-item id="page2-select1">
+       <ion-label floating>Eserin Dili</ion-label>
+      <ion-select [(ngModel)]="datasOfPublisher.languageOfPublishing" name="">
+        <ion-option>Türkçe</ion-option>
+        <ion-option>Almanca</ion-option>
+        <ion-option>Arapça</ion-option>
+        <ion-option>Farsça</ion-option>
+        <ion-option>Fransızca</ion-option>
+        <ion-option>Osmanlıca</ion-option>
+        <ion-option>Rusça</ion-option>
+        <ion-option>İngilizce</ion-option>
+        <ion-option>İtalyanca</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item id="page2-input7">
+       <ion-label floating>Eğer Varsa Eserin Çevirmeni</ion-label>
+      <ion-input [(ngModel)]="datasOfPublisher.translatorOfPublishing" type="text" placeholder=""></ion-input>
+    </ion-item>
+    <ion-item>
+    <ion-label >Eser kütüphane dışına çıkartılabilir mi?</ion-label>
+    <ion-toggle [(ngModel)]="datasOfPublisher.canBeTake"></ion-toggle>
+  </ion-item>
+  <ion-item>
+    <ion-label >Eser kütüphane içinde görülebilir mi?</ion-label>
+    <ion-toggle [(ngModel)]="datasOfPublisher.canBeShow"></ion-toggle>
+  </ion-item>
+
+  <button *ngIf="datasOfPublisher.nameOfPublishing" id="page2-button8" ion-button (click)="saveItToDatabase(datasOfPublisher, '003')" color="positive" block>
+    Kaydet
+  </button>
+
+  </div>
+</ion-list>
+
+
+
+</ion-content>

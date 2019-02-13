@@ -1,0 +1,24 @@
+<ion-header>
+
+  <ion-navbar color="secondary">
+    <ion-title>Kütüphane Girişi Yap</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+	<ion-item> 
+		<ion-label floating>Kütüphane numaranızı giriniz.</ion-label>
+ 		<ion-input type="text" [(ngModel)]="userOfMine.email"> </ion-input>
+	</ion-item>
+
+	<ion-item> 
+		<ion-label floating>Kütüphane Şifrenizi giriniz</ion-label>
+ 		<ion-input type="password" [(ngModel)]="userOfMine.password"> </ion-input>
+	</ion-item>
+
+	<button ion-button block (click)="tryToLogin(userOfMine)" color="primary"> Giriş Yap </button>
+
+</ion-content>

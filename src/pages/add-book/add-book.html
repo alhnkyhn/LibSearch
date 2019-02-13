@@ -1,0 +1,27 @@
+<ion-header>
+
+  <ion-navbar color="secondary">
+    <ion-title>Kitap Ekle</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-item> 
+    Hoşgeldiniz , {{nameOfLibrary}} Kütüphanesi
+  </ion-item>
+
+  <form id="page-form3">
+    <button (click) = "navigateToAddBook2()" id="page-button5" ion-button color="positive" block large icon-left style="border-radius:15px 15px 15px 15px;" >
+      <ion-icon name="book"></ion-icon>
+      Eser Ekleme İşlemleri
+    </button>
+    <button (click) = "navigateToAcceptPage()" id="page-button6" ion-button color="positive" block large icon-left style="border-radius:15px 15px 15px 15px;">
+      <ion-icon name="person"></ion-icon>
+      Kütüphane Üyelik Onay İşlemleri
+    </button>
+  </form>
+
+  
+
+</ion-content>

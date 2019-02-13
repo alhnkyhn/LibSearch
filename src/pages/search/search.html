@@ -1,0 +1,200 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Kitap Ara</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-item>
+	<ion-label floating> Lütfen arama türünü seçiniz </ion-label>
+	<ion-select [(ngModel)]="typeOfSearch"(ionChange)="listToBooks(typeOfSearch)"> 
+		<ion-option value="0"> Şehire Göre Ara</ion-option>
+		<ion-option value="1"> Kütüphaneye Göre Ara</ion-option>
+		<ion-option value="2"> Eserler türüne Göre Ara</ion-option>
+		<ion-option value="3"> Tüm Eserleri Listele</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <div *ngIf="canSelectCity"> 
+  	<ion-item>
+  <ion-label floating>Şehir Seçiniz</ion-label>
+  <ion-select [(ngModel)]="nameOfCity" (ionChange)="getCity(nameOfCity)" >
+      <ion-option value="001">Adana</ion-option>
+      <ion-option value="002">Adıyaman</ion-option>
+      <ion-option value="003">Afyonkarahisar</ion-option>
+      <ion-option value="004">Ağrı</ion-option>
+      <ion-option value="005">Amasya</ion-option>
+      <ion-option value="006">Ankara</ion-option>
+      <ion-option value="007">Antalya</ion-option>
+      <ion-option value="008">Artvin</ion-option>
+      <ion-option value="009">Aydın</ion-option>
+      <ion-option value="010">Balıkesir</ion-option>
+      <ion-option value="011">Bilecik</ion-option>
+      <ion-option value="012">Bingöl</ion-option>
+      <ion-option value="013">Bitlis</ion-option>
+      <ion-option value="014">Bolu</ion-option>
+      <ion-option value="015">Burdur</ion-option>
+      <ion-option value="016">Bursa</ion-option>
+      <ion-option value="017">Çanakkale</ion-option>
+      <ion-option value="018">Çankırı</ion-option>
+      <ion-option value="019">Çorum</ion-option>
+      <ion-option value="020">Denizli</ion-option>
+      <ion-option value="021">Diyarbakır</ion-option>
+      <ion-option value="022">Edirne</ion-option>
+      <ion-option value="023">Elazığ</ion-option>
+      <ion-option value="024">Erzincan</ion-option>
+      <ion-option value="025">Erzurum</ion-option>
+      <ion-option value="026">Eskişehir</ion-option>
+      <ion-option value="027">Gaziantep</ion-option>
+      <ion-option value="028">Giresun</ion-option>
+      <ion-option value="029">Gümüşhane</ion-option>
+      <ion-option value="030">Hakkâri</ion-option>
+      <ion-option value="031">Hatay</ion-option>
+      <ion-option value="032">Isparta</ion-option>
+      <ion-option value="033">Mersin</ion-option>
+      <ion-option value="034">İstanbul</ion-option>
+      <ion-option value="035">İzmir</ion-option>
+      <ion-option value="036">Kars</ion-option>
+      <ion-option value="037">Kastamonu</ion-option>
+      <ion-option value="038">Kayseri</ion-option>
+      <ion-option value="039">Kırklareli</ion-option>
+      <ion-option value="040">Kırşehir</ion-option>
+      <ion-option value="041">Kocaeli</ion-option>
+      <ion-option value="042">Konya</ion-option>
+      <ion-option value="043">Kütahya</ion-option>
+      <ion-option value="044">Malatya</ion-option>
+      <ion-option value="045">Manisa</ion-option>
+      <ion-option value="046">Kahramanmaraş</ion-option>
+      <ion-option value="047">Mardin</ion-option>
+      <ion-option value="048">Muğla</ion-option>
+      <ion-option value="049">Muş</ion-option>
+      <ion-option value="050">Nevşehir</ion-option>
+      <ion-option value="051">Niğde</ion-option>
+      <ion-option value="052">Ordu</ion-option>
+      <ion-option value="053">Rize</ion-option>
+      <ion-option value="054">Sakarya</ion-option>
+      <ion-option value="055">Samsun</ion-option>
+      <ion-option value="056">Siirt</ion-option>
+      <ion-option value="057">Sinop</ion-option>
+      <ion-option value="058">Sivas</ion-option>
+      <ion-option value="059">Tekirdağ</ion-option>
+      <ion-option value="060">Tokat</ion-option>
+      <ion-option value="061">Trabzon</ion-option>
+      <ion-option value="062">Tunceli</ion-option>
+      <ion-option value="063">Şanlıurfa</ion-option>
+      <ion-option value="064">Uşak</ion-option>
+      <ion-option value="065">Van</ion-option>
+      <ion-option value="066">Yozgat</ion-option>
+      <ion-option value="067">Zonguldak</ion-option>
+      <ion-option value="068">Aksaray</ion-option>
+      <ion-option value="069">Bayburt</ion-option>
+      <ion-option value="070">Karaman</ion-option>
+      <ion-option value="071">Kırıkkale</ion-option>
+      <ion-option value="072">Batman</ion-option>
+      <ion-option value="073">Şırnak</ion-option>
+      <ion-option value="074">Bartın</ion-option>
+      <ion-option value="075">Ardahan</ion-option>
+      <ion-option value="076">Iğdır</ion-option>
+      <ion-option value="077">Yalova</ion-option>
+      <ion-option value="078">Karabük</ion-option>
+      <ion-option value="079">Kilis</ion-option>
+      <ion-option value="080">Osmaniye</ion-option>
+      <ion-option value="081">Düzce</ion-option>
+  </ion-select>
+  </ion-item>
+ 
+
+ <div *ngIf="nameOfCity?.length>1">
+  	<ion-card *ngFor="let item of handmadeRef$ |async">
+    	<img *ngIf="deneme(item.IDofBook)" [src]="deneme(item.IDofBook)" style="height: 150px;width: 150px;">
+    	<ion-card-header>
+   Eserin Adı : {{item.nameOfBook}}
+  </ion-card-header>
+  <ion-card-content *ngIf="(item.typeOf=='001')">
+  	Eserin Türü: El Yazması Eser 
+  	<br>
+    Yazarı : {{item.nameOfWriter}}
+    <br>
+    Yazım Tarihi: {{item.dateOfWork}}
+    <br>
+    Eserin Dili : {{item.languageOfWork}}
+    <br>
+    Eserin Çevirmeni : {{item.translatorOfWork}}
+    <br>
+    <div *ngIf="item.canBeTake==true">
+    	Eser Ödünç Alınabilirlik Durumu : Evet
+	</div>
+	<div *ngIf="item.canBeTake==false">
+    	Eser Ödünç Alınabilirlik Durumu : Hayır
+	</div>
+	<div *ngIf="item.canBeShow==true">
+    	Eser Ödünç Alınabilirlik Durumu : Evet
+	</div>
+	<div *ngIf="item.canBeShow==false">
+    	Eser Kütüphane İçinde Görülebilirlik Durumu : Hayır
+	</div>
+
+  </ion-card-content>
+
+  <ion-card-content *ngIf="(item.typeOf=='002')">
+  	Eserin Türü: Kitap
+  	<br>
+    Yazarı : {{item.nameOfWriter}}
+    <br>
+    Sayfa Sayısı : {{item.pageNumberOfBook}}
+    <br>
+    Yazım Tarihi: {{item.dateOfBook}}
+    <br>
+    Eserin Dili : {{item.languageOfBook}}
+    <br>
+    Eserin Çevirmeni : {{item.translatorOfBook}}
+    <br>
+    <div *ngIf="item.canBeTake==true">
+    	Eser Ödünç Alınabilirlik Durumu : Evet
+	</div>
+	<div *ngIf="item.canBeTake==false">
+    	Eser Ödünç Alınabilirlik Durumu : Hayır
+	</div>
+	<div *ngIf="item.canBeShow==true">
+    	Eser Ödünç Alınabilirlik Durumu : Evet
+	</div>
+	<div *ngIf="item.canBeShow==false">
+    	Eser Kütüphane İçinde Görülebilirlik Durumu : Hayır
+	</div>
+  </ion-card-content>
+  <ion-card-content *ngIf="(item.typeOf=='003')">
+  	Eserin Türü: Kitap
+  	<br>
+    Yazarı : {{item.nameOfWriter}}
+    <br>
+    Sayfa Sayısı : {{item.pageNumberOfBook}}
+    <br>
+    Yazım Tarihi: {{item.dateOfBook}}
+    <br>
+    Eserin Dili : {{item.languageOfBook}}
+    <br>
+    Eserin Çevirmeni : {{item.translatorOfBook}}
+    <br>
+    <div *ngIf="item.canBeTake==true">
+    	Eser Ödünç Alınabilirlik Durumu : Evet
+	</div>
+	<div *ngIf="item.canBeTake==false">
+    	Eser Ödünç Alınabilirlik Durumu : Hayır
+	</div>
+	<div *ngIf="item.canBeShow==true">
+    	Eser Ödünç Alınabilirlik Durumu : Evet
+	</div>
+	<div *ngIf="item.canBeShow==false">
+    	Eser Kütüphane İçinde Görülebilirlik Durumu : Hayır
+	</div>
+  </ion-card-content>
+
+  </ion-card>
+</div>
+
+
+ </div>
+</ion-content>

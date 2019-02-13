@@ -1,0 +1,33 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Onay</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+<div *ngFor="let item of values| async" >
+  <div *ngIf= "item.canBeRezerve == 'false'">
+	<div *ngIf="item.IDofUser">
+		<ion-card (click) = "AcceptOrNot(item)">
+ 
+		  <ion-card-header>
+		    Adı-Soyadı: : {{item.nameOfUser + item.lastnameOfUser}}
+		  </ion-card-header>
+
+		  <ion-card-content>
+		    TC Numarası: : {{item.IDofUser}}
+		  </ion-card-content>
+
+		  <ion-card-content>
+		    Doğum Tarihi: : {{item.dateOfBorn}}
+		  </ion-card-content>
+
+		</ion-card>
+	</div>
+  </div>
+</div>
+
+</ion-content>
