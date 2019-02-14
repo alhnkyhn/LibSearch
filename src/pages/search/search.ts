@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFireDatabase , AngularFireList} from 'angularfire2/database'; 
 import { Observable } from "rxjs";
 import * as firebase from 'firebase/app';
+import { AlertController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -10,22 +11,28 @@ import * as firebase from 'firebase/app';
   templateUrl: 'search.html',
 })
 export class SearchPage {
-  valueOfEmail: string;
-  typeOfSearch: any;
-  canSelectCity: boolean;
-  canSelectLibrary : boolean;
-  canSelectTypeOfWork : boolean;
-  books
-  temp : string;
-  libraries = [];
-  cities = [];
-  codeOfLibraries = [];
-  result = [];
-  handmadeRef$: Observable<any>
+  /* declarations */
+    valueOfEmail: string;
+    IDofLibrary : string;
+    typeOfSearch: any;
+    canSelectCity: boolean;
+    canSelectLibrary : boolean;
+    canSelectTypeOfWork : boolean;
+    emailControl : boolean;
+    reserveControl : boolean;
+    books
+    temp : string;
+    libraries = [];
+    cities = [];
+    codeOfLibraries = [];
+    result = [];
+    handmadeRef$: Observable<any>
+  /*             */
   constructor(
   	public navCtrl: NavController,
   	public navParams: NavParams,
-  	private database: AngularFireDatabase
+  	private database: AngularFireDatabase,
+    public alertCtrl: AlertController
   	 ) {
       this.valueOfEmail = navParams.get('eMail');
       this.handmadeRef$ = database.list('Temp/').valueChanges();
@@ -145,4 +152,68 @@ export class SearchPage {
   	return "http://chart.apis.google.com/chart?cht=qr&chs=400x400&chl="+value+"&chld=H|0"
   }
 
+  reserve(IDofBook){
+    this.reserveControl = false;
+    this.emailControl = false;
+    this.IDofLibrary = IDofBook.substring(0,6);
+    this.database.list('Applications/'+this.IDofLibrary+'/').valueChanges().subscribe((data) =>{
+      for(let item of data){
+        console.log("Karsilastirma : " + item.Email +"-----"+this.valueOfEmail )
+        if(item.Email === this.valueOfEmail){
+          this.emailControl = true;
+
+          if(item.canBeRezerve=="true"){
+            this.reserveControl = true;
+          }
+        }
+      }
+        console.log(this.emailControl + ' *---*' + this.reserveControl)
+        if(this.emailControl == true && this.reserveControl == true){
+          const confirm = this.alertCtrl.create({
+            title: 'Rezervasyon yapmak istiyor musunuz?',
+            message: 'Rezervasyon yaptığınız durumda 1 hafta içinde'
+             +'kitabı kütüphaneden almanız gerekiyor aksi halde üyeliğiniz iptal olacak. <br>'+
+             'Onaylıyor musunuz?',
+            buttons: [
+              {
+                text: 'Onaylamıyorum',
+                handler: () => {
+                  console.log('Disagree clicked');
+                }
+              },
+              {
+                text: 'Onaylıyorum',
+                handler: () => {
+                  console.log('Agree clicked');
+                }
+              }
+            ]
+          });
+        confirm.present();
+        }else if(this.emailControl == true && this.reserveControl == false){
+          const alert = this.alertCtrl.create({
+              title: 'Üyelik',
+              subTitle: 'Üyeliğiniz onaylanmadan rezervasyon işlemi yapamazsınız!',
+              buttons: ['Tamam']
+          });
+          alert.present();
+        }else if(this.emailControl==false){
+          const alert = this.alertCtrl.create({
+              title: 'Üyelik',
+              subTitle: 'Kütüphaneye üye olmadan rezervasyon işlemi yapamazsınız!',
+              buttons: ['Tamam']
+            });
+            alert.present();
+          }else{
+            console.log("Uh seems like a there is a problem in searchpage");
+          }
+              
+         
+
+          
+        
+    });            
+  }
+
 }
+                   
