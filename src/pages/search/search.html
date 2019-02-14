@@ -108,7 +108,7 @@
  
 
  <div *ngIf="nameOfCity?.length>1">
-  	<ion-card *ngFor="let item of handmadeRef$ |async" (click)="reserve(item.IDofBook)">
+  	<ion-card *ngFor="let item of handmadeRef$ |async">
     	<img *ngIf="deneme(item.IDofBook)" [src]="deneme(item.IDofBook)" style="height: 150px;width: 150px;">
     	<ion-card-header>
    Eserin Adı : {{item.nameOfBook}}
