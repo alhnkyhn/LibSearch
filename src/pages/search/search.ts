@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AngularFireDatabase , AngularFireList} from 'angularfire2/database'; 
 import { Observable } from "rxjs";
+import { FormControl } from '@angular/forms';
+import 'rxjs/add/operator/debounceTime';
+
 import * as firebase from 'firebase/app';
 
 @IonicPage()
@@ -15,34 +18,98 @@ export class SearchPage {
   canSelectCity: boolean;
   canSelectLibrary : boolean;
   canSelectTypeOfWork : boolean;
-  books
+  searchByName: boolean;
+  didAddBefore: boolean;
+
   temp : string;
+  temp2 : string;
   libraries = [];
   cities = [];
   codeOfLibraries = [];
   result = [];
-  handmadeRef$: Observable<any>
+  nameOfBooks=[];
+  resultOfSearch=[];
+  handmadeRef$: Observable<any>;
+
+  searchTerm: string = '';
+  items: any;
+  searchControl: FormControl;
+
   constructor(
   	public navCtrl: NavController,
   	public navParams: NavParams,
   	private database: AngularFireDatabase
-  	 ) {
+    
+    ) {
       this.valueOfEmail = navParams.get('eMail');
       this.handmadeRef$ = database.list('Temp/').valueChanges();
+  }
+
+  search(stringToSearch){
+    this.resultOfSearch = [];
+    this.didAddBefore=false;
+    console.log("buraya gelen : " + stringToSearch);
+    this.database.list('Temp/').valueChanges().subscribe((data) => {
+       for(let item of data){
+         this.temp = item.nameOfBook.toLowerCase();
+         this.temp = this.temp.split(' ').join('');
+         console.log(this.temp);
+
+         this.temp2 = stringToSearch.toLowerCase();
+         this.temp2 = this.temp2.split(' ').join('');
+
+         console.log(this.temp.search(this.temp2));
+         for(var i=0; i<this.resultOfSearch.length;i++){
+           if(this.resultOfSearch[i]===item.nameOfBook){
+             this.didAddBefore=true;
+           }else{
+
+           }
+         }
+
+         if(this.didAddBefore==false){
+           if(this.temp.startsWith(this.temp2) == true || this.temp.endsWith(this.temp2) == true){
+             console.log("burayaGeldi")
+             this.resultOfSearch.push(this.temp);
+
+           }else if(this.temp2.length>3){
+             if(this.temp.search(this.temp2).valueOf()> (-1) ){
+               this.resultOfSearch.push(this.temp);    
+             }
+             
+           }         
+         }
+       }
+       console.log(this.resultOfSearch)
+     });
+
   }
 
   listToBooks(typeOfSearch){
   	console.log(typeOfSearch)
 
-  	if (typeOfSearch == "0") { 
+  	if (typeOfSearch === "0") { 
+
   		this.canSelectCity = true;
-  	} else if(typeOfSearch =="1") {
-  		this.canSelectLibrary = true;
-  	} else if (typeOfSearch =="2") {
-  		this.canSelectTypeOfWork = true;
-  	} else if (typeOfSearch=="3"){
-  		console.log("n");
-  	}else{
+      this.canSelectLibrary = false;
+      this.searchByName = true;
+      this.canSelectTypeOfWork = false;
+
+  	} else if(typeOfSearch === "1") {
+
+  		this.canSelectCity = false;
+      this.canSelectLibrary = true;
+      this.searchByName = false;
+      this.canSelectTypeOfWork = false;
+
+  	} else if (typeOfSearch === "2") {
+
+  		this.canSelectCity = false;
+      this.canSelectLibrary = false;
+      this.canSelectTypeOfWork = true;
+      this.searchByName = false;
+
+    }else{
   		console.log("kk")
   	}
 

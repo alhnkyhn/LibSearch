@@ -27,6 +27,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { CONFIG_OF_FIREBASE } from '../config';
+import { DataProvider } from '../providers/data/data';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { CONFIG_OF_FIREBASE } from '../config';
     SplashScreen,
     AngularFireAuth,
     AngularFireDatabase,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    DataProvider
   ]
 })
 export class AppModule {}

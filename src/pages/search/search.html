@@ -13,15 +13,16 @@
 	<ion-select [(ngModel)]="typeOfSearch"(ionChange)="listToBooks(typeOfSearch)"> 
 		<ion-option value="0"> Şehire Göre Ara</ion-option>
 		<ion-option value="1"> Kütüphaneye Göre Ara</ion-option>
-		<ion-option value="2"> Eserler türüne Göre Ara</ion-option>
+    <ion-option value="2"> Eserler Türüne Göre Ara</ion-option>
 		<ion-option value="3"> Tüm Eserleri Listele</ion-option>
+
     </ion-select>
   </ion-item>
 
-  <div *ngIf="canSelectCity"> 
-  	<ion-item>
-  <ion-label floating>Şehir Seçiniz</ion-label>
-  <ion-select [(ngModel)]="nameOfCity" (ionChange)="getCity(nameOfCity)" >
+<div *ngIf="canSelectCity"> 
+  <ion-item>
+    <ion-label floating>Şehir Seçiniz</ion-label>
+    <ion-select [(ngModel)]="nameOfCity" (ionChange)="getCity(nameOfCity)">
       <ion-option value="001">Adana</ion-option>
       <ion-option value="002">Adıyaman</ion-option>
       <ion-option value="003">Afyonkarahisar</ion-option>
@@ -103,98 +104,107 @@
       <ion-option value="079">Kilis</ion-option>
       <ion-option value="080">Osmaniye</ion-option>
       <ion-option value="081">Düzce</ion-option>
-  </ion-select>
+    </ion-select>
   </ion-item>
- 
 
- <div *ngIf="nameOfCity?.length>1">
-  	<ion-card *ngFor="let item of handmadeRef$ |async">
-    	<img *ngIf="deneme(item.IDofBook)" [src]="deneme(item.IDofBook)" style="height: 150px;width: 150px;">
-    	<ion-card-header>
-   Eserin Adı : {{item.nameOfBook}}
-  </ion-card-header>
-  <ion-card-content *ngIf="(item.typeOf=='001')">
-  	Eserin Türü: El Yazması Eser 
-  	<br>
-    Yazarı : {{item.nameOfWriter}}
-    <br>
-    Yazım Tarihi: {{item.dateOfWork}}
-    <br>
-    Eserin Dili : {{item.languageOfWork}}
-    <br>
-    Eserin Çevirmeni : {{item.translatorOfWork}}
-    <br>
-    <div *ngIf="item.canBeTake==true">
-    	Eser Ödünç Alınabilirlik Durumu : Evet
-	</div>
-	<div *ngIf="item.canBeTake==false">
-    	Eser Ödünç Alınabilirlik Durumu : Hayır
-	</div>
-	<div *ngIf="item.canBeShow==true">
-    	Eser Ödünç Alınabilirlik Durumu : Evet
-	</div>
-	<div *ngIf="item.canBeShow==false">
-    	Eser Kütüphane İçinde Görülebilirlik Durumu : Hayır
-	</div>
+  <ion-item>
+    <div *ngIf="searchByName"> 
+      <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="search(searchTerm)"> </ion-searchbar>
+    </div>
+  </ion-item>
 
-  </ion-card-content>
+    <div *ngIf="stringToSearch?.length<3">
+    <ion-card *ngFor="let item of handmadeRef$ |async">
+      	<img *ngIf="deneme(item.IDofBook)" [src]="deneme(item.IDofBook)" style="height: 150px;width: 150px;">
+    <ion-card-header>
+     Burda : Eserin Adı : {{item.nameOfBook}}
+    </ion-card-header>
+    <ion-card-content *ngIf="(item.typeOf=='001')">
+    	Eserin Türü: El Yazması Eser 
+    	<br>
+      Yazarı : {{item.nameOfWriter}}
+      <br>
+      Yazım Tarihi: {{item.dateOfWork}}
+      <br>
+      Eserin Dili : {{item.languageOfWork}}
+      <br>
+      Eserin Çevirmeni : {{item.translatorOfWork}}
+      <br>
+      <div *ngIf="item.canBeTake==true">
+      	Eser Ödünç Alınabilirlik Durumu : Evet
+  	</div>
+  	<div *ngIf="item.canBeTake==false">
+      	Eser Ödünç Alınabilirlik Durumu : Hayır
+  	</div>
+  	<div *ngIf="item.canBeShow==true">
+      	Eser Ödünç Alınabilirlik Durumu : Evet
+  	</div>
+  	<div *ngIf="item.canBeShow==false">
+      	Eser Kütüphane İçinde Görülebilirlik Durumu : Hayır
+  	</div>
 
-  <ion-card-content *ngIf="(item.typeOf=='002')">
-  	Eserin Türü: Kitap
-  	<br>
-    Yazarı : {{item.nameOfWriter}}
-    <br>
-    Sayfa Sayısı : {{item.pageNumberOfBook}}
-    <br>
-    Yazım Tarihi: {{item.dateOfBook}}
-    <br>
-    Eserin Dili : {{item.languageOfBook}}
-    <br>
-    Eserin Çevirmeni : {{item.translatorOfBook}}
-    <br>
-    <div *ngIf="item.canBeTake==true">
-    	Eser Ödünç Alınabilirlik Durumu : Evet
-	</div>
-	<div *ngIf="item.canBeTake==false">
-    	Eser Ödünç Alınabilirlik Durumu : Hayır
-	</div>
-	<div *ngIf="item.canBeShow==true">
-    	Eser Ödünç Alınabilirlik Durumu : Evet
-	</div>
-	<div *ngIf="item.canBeShow==false">
-    	Eser Kütüphane İçinde Görülebilirlik Durumu : Hayır
-	</div>
-  </ion-card-content>
-  <ion-card-content *ngIf="(item.typeOf=='003')">
-  	Eserin Türü: Kitap
-  	<br>
-    Yazarı : {{item.nameOfWriter}}
-    <br>
-    Sayfa Sayısı : {{item.pageNumberOfBook}}
-    <br>
-    Yazım Tarihi: {{item.dateOfBook}}
-    <br>
-    Eserin Dili : {{item.languageOfBook}}
-    <br>
-    Eserin Çevirmeni : {{item.translatorOfBook}}
-    <br>
-    <div *ngIf="item.canBeTake==true">
-    	Eser Ödünç Alınabilirlik Durumu : Evet
-	</div>
-	<div *ngIf="item.canBeTake==false">
-    	Eser Ödünç Alınabilirlik Durumu : Hayır
-	</div>
-	<div *ngIf="item.canBeShow==true">
-    	Eser Ödünç Alınabilirlik Durumu : Evet
-	</div>
-	<div *ngIf="item.canBeShow==false">
-    	Eser Kütüphane İçinde Görülebilirlik Durumu : Hayır
-	</div>
-  </ion-card-content>
+    </ion-card-content>
 
-  </ion-card>
+    <ion-card-content *ngIf="(item.typeOf=='002')">
+    	Eserin Türü: Kitap
+    	<br>
+      Yazarı : {{item.nameOfWriter}}
+      <br>
+      Sayfa Sayısı : {{item.pageNumberOfBook}}
+      <br>
+      Yazım Tarihi: {{item.dateOfBook}}
+      <br>
+      Eserin Dili : {{item.languageOfBook}}
+      <br>
+      Eserin Çevirmeni : {{item.translatorOfBook}}
+      <br>
+      <div *ngIf="item.canBeTake==true">
+      	Eser Ödünç Alınabilirlik Durumu : Evet
+  	  </div>
+  	<div *ngIf="item.canBeTake==false">
+      	Eser Ödünç Alınabilirlik Durumu : Hayır
+  	</div>
+  	<div *ngIf="item.canBeShow==true">
+      	Eser Ödünç Alınabilirlik Durumu : Evet
+  	</div>
+  	<div *ngIf="item.canBeShow==false">
+      	Eser Kütüphane İçinde Görülebilirlik Durumu : Hayır
+  	</div>
+    </ion-card-content>
+
+    <ion-card-content *ngIf="(item.typeOf=='003')">
+    	Eserin Türü: Kitap
+    	<br>
+      Yazarı : {{item.nameOfWriter}}
+      <br>
+      Sayfa Sayısı : {{item.pageNumberOfBook}}
+      <br>
+      Yazım Tarihi: {{item.dateOfBook}}
+      <br>
+      Eserin Dili : {{item.languageOfBook}}
+      <br>
+      Eserin Çevirmeni : {{item.translatorOfBook}}
+      <br>
+      <div *ngIf="item.canBeTake==true">
+      	Eser Ödünç Alınabilirlik Durumu : Evet
+  	</div>
+  	<div *ngIf="item.canBeTake==false">
+      	Eser Ödünç Alınabilirlik Durumu : Hayır
+  	</div>
+  	<div *ngIf="item.canBeShow==true">
+      	Eser Ödünç Alınabilirlik Durumu : Evet
+  	</div>
+  	<div *ngIf="item.canBeShow==false">
+      	Eser Kütüphane İçinde Görülebilirlik Durumu : Hayır
+  	</div>
+    </ion-card-content>
+
+    </ion-card>
+  </div>
+
+
 </div>
 
 
- </div>
+
 </ion-content>
