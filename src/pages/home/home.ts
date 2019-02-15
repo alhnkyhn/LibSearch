@@ -5,6 +5,7 @@ import { AngularFireDatabase , AngularFireList} from 'angularfire2/database';
 import { Book } from '../../model/book.interface';
 import { ApplicationPage } from '../application/application';
 import { SearchPage } from '../search/search';
+import { LoanPage } from '../loan/loan';
 import { ApplicationDetailPage } from '../application-detail/application-detail';
 
 @Component({
@@ -61,6 +62,12 @@ export class HomePage {
         eMail : this.valueOfEmail
       })
 
+    }
+
+    navigateToLoanPage(){
+      this.navCtrl.push(LoanPage , {
+        eMail : this.valueOfEmail
+      });
     }
 
 }

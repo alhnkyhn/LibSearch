@@ -2,6 +2,7 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
+import { LoanPage } from '../pages/loan/loan';
 
 import { SignupPage } from '../pages/signup/signup';
 import { IntroPage } from '../pages/intro/intro';
@@ -45,7 +46,8 @@ import { CONFIG_OF_FIREBASE } from '../config';
     ApplicationPage,
     ApplicationDetailPage,
     AcceptPage,
-    SearchPage
+    SearchPage,
+    LoanPage
   ],
   imports: [
     BrowserModule,
@@ -70,7 +72,9 @@ import { CONFIG_OF_FIREBASE } from '../config';
     ApplicationPage,
     ApplicationDetailPage,
     AcceptPage,
-    SearchPage
+    SearchPage,
+    LoanPage
+    
   ],
   providers: [
     StatusBar,

@@ -17,6 +17,7 @@ import { LibraryPage } from '../pages/library/library';
 import { AcceptPage} from '../pages/accept/accept';
 import { ApplicationPage } from '../pages/application/application';
 import { SearchPage } from '../pages/search/search';
+import { LoanPage } from '../pages/loan/loan';
 import { ApplicationDetailPage } from '../pages/application-detail/application-detail';
 
 import { timer } from 'rxjs/observable/timer'

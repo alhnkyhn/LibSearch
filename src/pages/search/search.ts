@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams , AlertController} from 'ionic-angular';
 import { AngularFireDatabase , AngularFireList} from 'angularfire2/database'; 
 import { Observable } from "rxjs";
 import * as firebase from 'firebase/app';
-import { AlertController } from 'ionic-angular';
+import { Loan } from '../../model/loan.interface';
 
 @IonicPage()
 @Component({
@@ -26,7 +26,9 @@ export class SearchPage {
     cities = [];
     codeOfLibraries = [];
     result = [];
+    dateOfToday : any;
     handmadeRef$: Observable<any>
+    loanInfRef$: Observable<Loan>;
   /*             */
   constructor(
   	public navCtrl: NavController,
@@ -144,11 +146,11 @@ export class SearchPage {
   }
 
   getLink(value){
-
   		return "http://www.barcodes4.me/barcode/i2of5/"+value+".jpg?width=200&height=100"
   }
 
   deneme(value){
+    this.dateOfToday =  new Date();
   	return "http://chart.apis.google.com/chart?cht=qr&chs=400x400&chl="+value+"&chld=H|0"
   }
 
@@ -156,6 +158,20 @@ export class SearchPage {
     this.reserveControl = false;
     this.emailControl = false;
     this.IDofLibrary = IDofBook.substring(0,6);
+
+    var today = new Date();
+    var dd = today.getDate();
+    dd = dd+15;
+    var mm = today.getMonth() + 1;
+    var yyyy = today.getFullYear();
+    var dateOfLoan = mm + '/' + dd + '/' + yyyy;
+
+    if(dd>30){
+    dd = dd%30;
+    dd+1;
+    mm+1;
+    }
+
     this.database.list('Applications/'+this.IDofLibrary+'/').valueChanges().subscribe((data) =>{
       for(let item of data){
         console.log("Karsilastirma : " + item.Email +"-----"+this.valueOfEmail )
@@ -183,8 +199,13 @@ export class SearchPage {
               },
               {
                 text: 'Onaylıyorum',
+
                 handler: () => {
-                  console.log('Agree clicked');
+                  firebase.database().ref('Loans/' + this.IDofLibrary + '/').push({
+                          emailOfUser: this.valueOfEmail,
+                          IDofBook: IDofBook,
+                          lastDayOfLoan:dateOfLoan,
+                  });
                 }
               }
             ]
