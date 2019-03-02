@@ -58,7 +58,7 @@ export class SearchPage {
          this.temp2 = stringToSearch.toLowerCase();
          this.temp2 = this.temp2.split(' ').join('');
 
-         console.log(this.temp.search(this.temp2));
+         
          for(var i=0; i<this.resultOfSearch.length;i++){
            if(this.resultOfSearch[i]===item.nameOfBook){
              this.didAddBefore=true;
@@ -68,15 +68,10 @@ export class SearchPage {
          }
 
          if(this.didAddBefore==false){
-           if(this.temp.startsWith(this.temp2) == true || this.temp.endsWith(this.temp2) == true){
-             console.log("burayaGeldi")
-             this.resultOfSearch.push(this.temp);
-
-           }else if(this.temp2.length>3){
+           if(this.temp2.length>2){
              if(this.temp.search(this.temp2).valueOf()> (-1) ){
                this.resultOfSearch.push(this.temp);    
              }
-             
            }         
          }
        }

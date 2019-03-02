@@ -113,7 +113,8 @@
     </div>
   </ion-item>
 
-    <div *ngIf="stringToSearch?.length<3">
+    <div *ngIf="searchTerm?.length<3">
+      <div *ngIf="nameOfCity">
     <ion-card *ngFor="let item of handmadeRef$ |async">
       	<img *ngIf="deneme(item.IDofBook)" [src]="deneme(item.IDofBook)" style="height: 150px;width: 150px;">
     <ion-card-header>
@@ -202,7 +203,7 @@
     </ion-card>
   </div>
 
-
+</div>
 </div>
 
 
