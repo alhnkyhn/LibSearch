@@ -30,6 +30,8 @@ export class SearchPage {
   nameOfBooks=[];
   resultOfSearch=[];
   handmadeRef$: Observable<any>;
+  searchResultTemp$: Observable<any>;
+  searchResult$: Observable<any>;
 
   searchTerm: string = '';
   items: any;
@@ -43,18 +45,27 @@ export class SearchPage {
     ) {
       this.valueOfEmail = navParams.get('eMail');
       this.handmadeRef$ = database.list('Temp/').valueChanges();
+      this.searchResult$ = database.list('Temp4/').valueChanges();
+/*
+      if(this.searchResult$){
+        this.searchResultTemp$ = this.searchResult$;
+      }else{
+        this.searchResultTemp$= null;
+      }
+      */
   }
 
   search(stringToSearch){
     this.resultOfSearch = [];
     this.didAddBefore=false;
-    console.log("buraya gelen : " + stringToSearch);
+    if(stringToSearch.length<3){
+      this.database.list('Temp4/').remove();
+    }
     this.database.list('Temp/').valueChanges().subscribe((data) => {
        for(let item of data){
          this.temp = item.nameOfBook.toLowerCase();
          this.temp = this.temp.split(' ').join('');
-         console.log(this.temp);
-
+         
          this.temp2 = stringToSearch.toLowerCase();
          this.temp2 = this.temp2.split(' ').join('');
 
@@ -70,13 +81,60 @@ export class SearchPage {
          if(this.didAddBefore==false){
            if(this.temp2.length>2){
              if(this.temp.search(this.temp2).valueOf()> (-1) ){
-               this.resultOfSearch.push(this.temp);    
+               if(item.typeOf==='001'){
+
+                 this.database.list('Temp4/').remove();
+                 console.log("Eklenecek : " + item.nameOfBook);
+                 this.database.list('Temp4/').push({
+                    typeOf :item.typeOf,
+                    IDofBook : item.IDofBook,
+                    nameOfBook : item.nameOfBook,
+                    nameOfWriter : item.nameOfWriter,
+                    canBeShow : item.canBeShow,
+                    canBeTake : item.canBeTake,
+                    languageOfWork: item.languageOfWork,
+                    translatorOfWork: item.translatorOfWork,
+                    dateOfWork: item.dateOfWork
+                 });
+               }else if(item.typeOf==='002'){
+
+                 this.database.list('Temp4/').remove();
+                 console.log("Eklenecek : " + item.nameOfBook);
+                 this.database.list('Temp4/').push({
+                    typeOf :item.typeOf,
+                    IDofBook : item.IDofBook,
+                    nameOfBook : item.nameOfBook,
+                    nameOfWriter : item.nameOfWriter,
+                    canBeShow : item.canBeShow,
+                    canBeTake : item.canBeTake,
+                    languageOfBook: item.languageOfBook,
+                    translatorOfBook: item.translatorOfBook,
+                    dateOfBook: item.dateOfBook
+                 });
+               }else if(item.typeOf==='003'){
+
+                 this.database.list('Temp4/').remove();
+                 console.log("Eklenecek : " + item.nameOfBook);
+                 this.database.list('Temp4/').push({
+                    typeOf :item.typeOf,
+                    number:item.number,
+                    IDofBook : item.IDofBook,
+                    nameOfBook : item.nameOfBook,
+                    nameOfWriter : item.nameOfWriter,
+                    canBeShow : item.canBeShow,
+                    canBeTake : item.canBeTake,
+                    languageOfBook: item.languageOfBook,
+                    translatorOfBook: item.translatorOfBook,
+                    dateOfBook: item.dateOfBook
+                 });
+               }        
              }
+
            }         
          }
        }
-       console.log(this.resultOfSearch)
      });
+
 
   }
 
@@ -176,7 +234,7 @@ export class SearchPage {
     										});
     								}
     								}else{
-    									console.log("Uh! Seems like a t here is a mistake!")
+    									console.log("Uh! Seems like a there is a mistake!")
     								}
     							});
     						});
