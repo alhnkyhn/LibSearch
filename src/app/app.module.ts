@@ -18,6 +18,7 @@ import { ApplicationPage } from '../pages/application/application';
 import { AcceptPage} from '../pages/accept/accept';
 import { ApplicationDetailPage } from '../pages/application-detail/application-detail';
 import { SearchPage } from '../pages/search/search';
+import { LoanPage } from '../pages/loan/loan';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -46,7 +47,8 @@ import { DataProvider } from '../providers/data/data';
     ApplicationPage,
     ApplicationDetailPage,
     AcceptPage,
-    SearchPage
+    SearchPage,
+    LoanPage
   ],
   imports: [
     BrowserModule,
@@ -71,7 +73,8 @@ import { DataProvider } from '../providers/data/data';
     ApplicationPage,
     ApplicationDetailPage,
     AcceptPage,
-    SearchPage
+    SearchPage,
+    LoanPage
   ],
   providers: [
     StatusBar,
