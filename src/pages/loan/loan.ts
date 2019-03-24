@@ -21,11 +21,11 @@ export class LoanPage {
   		private database: AngularFireDatabase,
 
 		) {
-	    this.loanInfRef$ = database.list('Temp3/').valueChanges();
-	    this.valueOfEmail = navParams.get('eMail');
+
+		this.loanInfRef$ = database.list('Temp3/').valueChanges();
 	    firebase.database().ref('Temp3/').remove();
-	    
-	    	firebase.database().ref('Loans/').orderByChild('IDofUser').once('value').then(snapshot => {
+	    this.valueOfEmail = navParams.get('eMail');
+	    	firebase.database().ref('Loans/').orderByChild('emailOfUser').once('value').then(snapshot => {
     			snapshot.forEach(function(child) {
     				firebase.database().ref('Loans/'+child.key+'/').orderByChild('IDofUser').once('value').then(snapshot => {
     					snapshot.forEach(function(child1) {
@@ -33,33 +33,30 @@ export class LoanPage {
 									var cityCode = child1.val().IDofBook.substring(0,3);
 									var libraryCode = child1.val().IDofBook.substring(3,6);
 									var typeOfBook = child1.val().IDofBook.substring(6,9);
-									console.log("asfa:" + typeOfBook)
-									firebase.database().ref('Works/'+cityCode + '/' + libraryCode + '/' + typeOfBook +'/').orderByChild('IDofUser').once('value').then(snapshot => {
-    									snapshot.forEach(function(child2) {
+									
 									
 										
-											if(child2.val().IDofBook == child2.val().IDofBook && typeOfBook =="002"){
+											if(child1.val().emailOfUser == navParams.get('eMail') && typeOfBook =="002"){
 												firebase.database().ref('Temp3/').push({
 				    							IDofBook : child1.val().IDofBook,
-				    							nameOfBook : child2.val().nameOfBook,
-				    							nameOfWriter: child2.val().nameOfWriter,
+				    							nameOfBook : child1.val().nameOfBook,
+				    							nameOfWriter: child1.val().nameOfWriter,
 				    							email : child1.val().emailOfUser,
 				    							lastDayOfLoan : child1.val().lastDayOfLoan,
 				    						});
-											}else if(child2.val().IDofBook == child2.val().IDofBook && typeOfBook =="001"){
+											}else if(child1.val().emailOfUser == navParams.get('eMail') && typeOfBook =="001"){
 												firebase.database().ref('Temp3/').push({
 				    							IDofBook : child1.val().IDofBook,
-				    							nameOfBook : child2.val().nameOfWork,
-				    							nameOfWriter: child2.val().writerOfWork,
+				    							nameOfBook : child1.val().nameOfBook,
+				    							nameOfWriter: child1.val().nameOfWriter,
 				    							email : child1.val().emailOfUser,
 				    							lastDayOfLoan : child1.val().lastDayOfLoan,
 				    						});
-											}else if(child2.val().IDofBook == child2.val().IDofBook && typeOfBook =="003"){
+											}else if(child1.val().emailOfUser == navParams.get('eMail') && typeOfBook =="003"){
 												firebase.database().ref('Temp3/').push({
 				    							IDofBook : child1.val().IDofBook,
-				    							nameOfWriter : child2.val().nameOfPublisher,
-				    							nameOfBook: child2.val().nameOfPublishing,
-				    							numberOfPublishing: child2.val().numberOfPublishing,
+				    							nameOfWriter : child1.val().nameOfBook,
+				    							nameOfBook: child1.val().nameOfWriter,
 				    							email : child1.val().emailOfUser,
 				    							lastDayOfLoan : child1.val().lastDayOfLoan,
 				    						});
@@ -67,8 +64,7 @@ export class LoanPage {
 												console.log("there is a mistake in loants")	
 											}
 										
-									});
-									});
+									
 
 									
 
@@ -76,7 +72,7 @@ export class LoanPage {
 								
 							});
     						
-						}); 
+						});
     				});
 
 

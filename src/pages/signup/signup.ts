@@ -29,7 +29,10 @@ export class SignupPage {
   	signUp(){
   		
   		this.afAuth.auth.createUserWithEmailAndPassword(this.userOfMine.email, this.userOfMine.password).then(
-			() => this.navCtrl.setRoot(HomePage),
+			() => this.navCtrl.setRoot(HomePage,{
+        eMail: this.userOfMine.email
+      })
+      ,
 			error => this.signupError = error.message
 			);
   		

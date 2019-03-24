@@ -97,7 +97,6 @@ export class SearchPage {
                if(item.typeOf==='001'){
 
                  this.database.list('Temp4/').remove();
-                 console.log("Eklenecek : " + item.nameOfBook);
                  this.database.list('Temp4/').push({
                     typeOf :item.typeOf,
                     IDofBook : item.IDofBook,
@@ -112,7 +111,6 @@ export class SearchPage {
                }else if(item.typeOf==='002'){
 
                  this.database.list('Temp4/').remove();
-                 console.log("Eklenecek : " + item.nameOfBook);
                  this.database.list('Temp4/').push({
                     typeOf :item.typeOf,
                     IDofBook : item.IDofBook,
@@ -127,7 +125,6 @@ export class SearchPage {
                }else if(item.typeOf==='003'){
 
                  this.database.list('Temp4/').remove();
-                 console.log("Eklenecek : " + item.nameOfBook);
                  this.database.list('Temp4/').push({
                     typeOf :item.typeOf,
                     number:item.number,
@@ -152,7 +149,6 @@ export class SearchPage {
   }
 
   listToBooks(typeOfSearch){
-  	console.log(typeOfSearch)
 
   	if (typeOfSearch === "0") { 
 
@@ -176,7 +172,6 @@ export class SearchPage {
       this.searchByName = false;
 
     }else{
-  		console.log("kk")
   	}
 
 
@@ -211,7 +206,6 @@ export class SearchPage {
     									}
     								}else if(child2.key === "002"){
     									if(child3.val().IDofBook.substring(0,3) === nameOfCity){
-    									console.log(child3.val().IDofBook.substring(0,3))
     									firebase.database().ref('Temp/').push({
     											IDofBook : child3.val().IDofBook,
     											nameOfBook : child3.val().nameOfBook,
@@ -229,7 +223,6 @@ export class SearchPage {
     								}
     								}else if(child2.key === "003"){
     									if(child3.val().IDofPublisher.substring(0,3) === nameOfCity){
-    									console.log(child3.val().IDofPublisher.substring(0,3))
     									firebase.database().ref('Temp/').push({
     											IDofBook : child3.val().IDofPublisher,
     											nameOfBook : child3.val().nameOfPublishing,
@@ -258,16 +251,10 @@ export class SearchPage {
   }
 
   getData(tempValue){
-
-  	console.log("geldii : " + tempValue)
-
   	this.result =this.result + this.getCity(tempValue);
-  	console.log(this.result);
-  	
   }
 
   getLink(value){
-
   		return "http://www.barcodes4.me/barcode/i2of5/"+value+".jpg?width=200&height=100"
   }
 
@@ -279,17 +266,20 @@ export class SearchPage {
     this.reserveControl = false;
     this.emailControl = false;
     this.IDofLibrary = IDofBook.substring(0,6)
+    this.once=true;
 
 
     var today = new Date();
     var dd = today.getDate();
     dd = dd+15;
     var mm = today.getMonth() + 1;
+
     if(dd>30){
-    dd = dd%30;
-    dd+1;
-    mm+1;
+      dd = dd%30;
+      dd++;
+      mm++;
     }
+
     var yyyy = today.getFullYear();
     var dateOfLoan = mm + '/' + dd + '/' + yyyy;
 
@@ -312,9 +302,10 @@ export class SearchPage {
           }
         }
       }
-      this.database.list('Temp3'+'/').valueChanges().subscribe((data) =>{
+      this.database.list('Loans/'+cityPart+libraryPart+'/').valueChanges().subscribe((data3) =>{
+        this.database.list('Temp/' ).valueChanges().subscribe((data2) =>{
       if(this.took == false){
-          for(let item of data){
+          for(let item of data3){
             this.books[ii] = item.IDofBook;
             ii++;
           }
@@ -346,11 +337,17 @@ export class SearchPage {
                 text: 'Onaylıyorum',
 
                 handler: () => {
+                for(let item of data2){
+                  if(item.IDofBook == IDofBook){
                   firebase.database().ref('Loans/' + this.IDofLibrary + '/').push({
-                          emailOfUser: this.valueOfEmail,
-                          IDofBook: IDofBook,
-                          lastDayOfLoan:dateOfLoan,
+                        emailOfUser: this.valueOfEmail,
+                        IDofBook: IDofBook,
+                        nameOfBook : item.nameOfBook,
+                        nameOfWriter : item.nameOfWriter,
+                        lastDayOfLoan:dateOfLoan,
                   });
+                }
+                }
                   const toast = this.toastCtrl.create({
                       message: 'Kitap ödünç alma işlemi tamamlandı.',
                       duration: 3000,
@@ -361,6 +358,7 @@ export class SearchPage {
                     eMail : this.valueOfEmail
                   });
                   this.took = true;
+                  this.once = false;
                 }
               }
             ]
@@ -377,6 +375,7 @@ export class SearchPage {
 
       }
         }else if(this.emailControl == true && this.reserveControl == false){
+          this.once = false;
           const alert = this.alertCtrl.create({
               title: 'Üyelik',
               subTitle: 'Üyeliğiniz onaylanmadan rezervasyon işlemi yapamazsınız!',
@@ -384,6 +383,7 @@ export class SearchPage {
           });
           alert.present();
         }else if(this.emailControl==false){
+          this.once = false;
           const alert = this.alertCtrl.create({
               title: 'Üyelik',
               subTitle: 'Kütüphaneye üye olmadan rezervasyon işlemi yapamazsınız!',
@@ -391,12 +391,15 @@ export class SearchPage {
             });
             alert.present();
           }else{
+            this.once = false;
             console.log("Uh seems like a there is a problem in searchpage");
           }
         }
    }
     });    
     });
+    });
+
 
   }
 
