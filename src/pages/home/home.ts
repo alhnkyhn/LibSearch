@@ -6,6 +6,10 @@ import { Book } from '../../model/book.interface';
 import { ApplicationPage } from '../application/application';
 import { SearchPage } from '../search/search';
 import { ApplicationDetailPage } from '../application-detail/application-detail';
+import { LoanPage } from '../loan/loan';
+import { IntroPage } from '../intro/intro';
+
+import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'page-home',
@@ -62,5 +66,19 @@ export class HomePage {
       })
 
     }
+
+    navigateToLoanPage(){
+      this.navCtrl.push(LoanPage , {
+        eMail : this.valueOfEmail
+      });
+    }
+
+    logOut(){
+      firebase.auth().signOut().then(
+        () => this.navCtrl.setRoot(IntroPage)
+        );
+      this.valueOfEmail = "";
+    }
+
 
 }

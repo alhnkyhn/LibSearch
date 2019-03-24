@@ -1,8 +1,13 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController  } from 'ionic-angular';
 import { AngularFireDatabase , AngularFireList} from 'angularfire2/database'; 
 import { Observable } from "rxjs";
 import { FormControl } from '@angular/forms';
+import { Loan } from '../../model/loan.interface';
+import { HomePage } from '../home/home';
+import { LoanPage } from '../loan/loan';
+
+
 import 'rxjs/add/operator/debounceTime';
 
 import * as firebase from 'firebase/app';
@@ -13,6 +18,7 @@ import * as firebase from 'firebase/app';
   templateUrl: 'search.html',
 })
 export class SearchPage {
+  once : boolean;
   valueOfEmail: string;
   typeOfSearch: any;
   canSelectCity: boolean;
@@ -20,7 +26,7 @@ export class SearchPage {
   canSelectTypeOfWork : boolean;
   searchByName: boolean;
   didAddBefore: boolean;
-
+  IDofLibrary : string;
   temp : string;
   temp2 : string;
   libraries = [];
@@ -29,24 +35,31 @@ export class SearchPage {
   result = [];
   nameOfBooks=[];
   resultOfSearch=[];
+  books=[];
   handmadeRef$: Observable<any>;
   searchResultTemp$: Observable<any>;
   searchResult$: Observable<any>;
-
+  loanInfRef$: Observable<Loan>;
+  emailControl : boolean;
+  reserveControl : boolean;
+  counter : any;
   searchTerm: string = '';
   items: any;
   searchControl: FormControl;
+  took : boolean;
 
   constructor(
   	public navCtrl: NavController,
   	public navParams: NavParams,
-  	private database: AngularFireDatabase
-    
+  	private database: AngularFireDatabase,
+    public alertCtrl: AlertController,
+    public toastCtrl: ToastController
     ) {
       this.valueOfEmail = navParams.get('eMail');
       this.handmadeRef$ = database.list('Temp/').valueChanges();
       this.searchResult$ = database.list('Temp4/').valueChanges();
-/*
+      this.took = false;
+/*    
       if(this.searchResult$){
         this.searchResultTemp$ = this.searchResult$;
       }else{
@@ -183,9 +196,6 @@ export class SearchPage {
     								if(child2.key === "001"){
     									if(child3.val().IDofWork.substring(0,3) === nameOfCity){
     										var returnValue = child3.val().nameOfWork;
-    										console.log("sa"+returnValue)
-    										console.log("also: " +child3.val().nameOfWork)
-    										console.log("second also : " + child3.val().nameOfWriter)
     										firebase.database().ref('Temp/').push({
     											typeOf :child2.key,
     											IDofBook : child3.val().IDofWork,
@@ -263,6 +273,131 @@ export class SearchPage {
 
   deneme(value){
   	return "http://chart.apis.google.com/chart?cht=qr&chs=400x400&chl="+value+"&chld=H|0"
+  }
+
+  reserve(IDofBook){
+    this.reserveControl = false;
+    this.emailControl = false;
+    this.IDofLibrary = IDofBook.substring(0,6)
+
+
+    var today = new Date();
+    var dd = today.getDate();
+    dd = dd+15;
+    var mm = today.getMonth() + 1;
+    if(dd>30){
+    dd = dd%30;
+    dd+1;
+    mm+1;
+    }
+    var yyyy = today.getFullYear();
+    var dateOfLoan = mm + '/' + dd + '/' + yyyy;
+
+    
+
+    this.database.list('Applications/'+this.IDofLibrary+'/').valueChanges().subscribe((data) =>{
+      this.counter=0;
+      let cityPart = IDofBook.substring(0,3);
+      let libraryPart = IDofBook.substring(3,6);
+      let typePart = IDofBook.substring(6,9);
+      let bookPart = IDofBook.substring(9,14);
+
+      let ii = 0;
+      for(let item of data){
+        if(item.Email === this.valueOfEmail){
+          this.emailControl = true;
+
+          if(item.canBeRezerve=="true"){
+            this.reserveControl = true;
+          }
+        }
+      }
+      this.database.list('Temp3'+'/').valueChanges().subscribe((data) =>{
+      if(this.took == false){
+          for(let item of data){
+            this.books[ii] = item.IDofBook;
+            ii++;
+          }
+        
+      if(this.once == true){
+        if(this.emailControl == true && this.reserveControl == true){
+          this.once = false;
+          for (var i = 0; i <this.books.length; i++) {
+            let temp= this.books[i];
+            console.log(temp + " Karsilastirma " + IDofBook);
+            if(temp == IDofBook){
+            this.counter++;
+            }else{}
+          }
+          if(this.counter==0){
+          const confirm = this.alertCtrl.create({
+            title: 'Rezervasyon yapmak istiyor musunuz?',
+            message: 'Rezervasyon yaptığınız durumda 1 hafta içinde'
+             +'kitabı kütüphaneden almanız gerekiyor aksi halde üyeliğiniz iptal olacak. <br>'+
+             'Onaylıyor musunuz?',
+            buttons: [
+              {
+                text: 'Onaylamıyorum',
+                handler: () => {
+                  console.log('Disagree clicked');
+                }
+              },
+              {
+                text: 'Onaylıyorum',
+
+                handler: () => {
+                  firebase.database().ref('Loans/' + this.IDofLibrary + '/').push({
+                          emailOfUser: this.valueOfEmail,
+                          IDofBook: IDofBook,
+                          lastDayOfLoan:dateOfLoan,
+                  });
+                  const toast = this.toastCtrl.create({
+                      message: 'Kitap ödünç alma işlemi tamamlandı.',
+                      duration: 3000,
+                      position: 'top'
+                    });
+                    toast.present();
+                  this.navCtrl.setRoot(HomePage , {
+                    eMail : this.valueOfEmail
+                  });
+                  this.took = true;
+                }
+              }
+            ]
+          });
+        confirm.present();
+      }else{
+
+        const confirm = this.alertCtrl.create({
+           title: 'Rezervasyon yapılamaz',
+           message: 'Bu kitap zaten rezervasyon yapılmış durumda' + 'Rezervasyon bitiş tarihi: '+dateOfLoan
+        });
+        confirm.present();
+
+
+      }
+        }else if(this.emailControl == true && this.reserveControl == false){
+          const alert = this.alertCtrl.create({
+              title: 'Üyelik',
+              subTitle: 'Üyeliğiniz onaylanmadan rezervasyon işlemi yapamazsınız!',
+              buttons: ['Tamam']
+          });
+          alert.present();
+        }else if(this.emailControl==false){
+          const alert = this.alertCtrl.create({
+              title: 'Üyelik',
+              subTitle: 'Kütüphaneye üye olmadan rezervasyon işlemi yapamazsınız!',
+              buttons: ['Tamam']
+            });
+            alert.present();
+          }else{
+            console.log("Uh seems like a there is a problem in searchpage");
+          }
+        }
+   }
+    });    
+    });
+
   }
 
 }

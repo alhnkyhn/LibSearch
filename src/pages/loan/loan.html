@@ -7,26 +7,27 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>loan</ion-title>
+    <ion-title>Ödünç Alınan Kitaplar</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
-	<ion-card *ngFor="let item of loanInfRef$ |async">
+<div *ngFor="let item of loanInfRef$ |async" >
+	<ion-card *ngIf="item.email ==this.valueOfEmail" >
 
 	  <ion-card-header>
 	    {{item.nameOfBook}}
 	  </ion-card-header>
 
 	  <ion-card-content>
-	  	{{item.nameOfWriter:}}
+	  	{{item.nameOfWriter}}
 	  	{{item.lastDayOfLoan}}
 	    
 	  </ion-card-content>
 
 	</ion-card>
+</div>
 
 </ion-content>

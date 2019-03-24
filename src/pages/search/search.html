@@ -107,18 +107,18 @@
     </ion-select>
   </ion-item>
 
-  <ion-item *ngIf="nameOfCity">
+  <div class ="search-box" *ngIf="nameOfCity">
     <div *ngIf="searchByName"> 
       <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="search(searchTerm)"> </ion-searchbar>
     </div>
-  </ion-item>
+  </div>
 
     <div *ngIf="searchTerm?.length<3">
       <div *ngIf="nameOfCity">
-    <ion-card *ngFor="let item of handmadeRef$ |async">
+    <ion-card *ngFor="let item of handmadeRef$ |async" (click)="reserve(item.IDofBook)">
       	<img *ngIf="deneme(item.IDofBook)" [src]="deneme(item.IDofBook)" style="height: 150px;width: 150px;">
     <ion-card-header>
-     Burda : Eserin Adı : {{item.nameOfBook}}
+     Eserin Adı : {{item.nameOfBook}}
     </ion-card-header>
     <ion-card-content *ngIf="(item.typeOf=='001')">
     	Eserin Türü: El Yazması Eser 
@@ -207,7 +207,7 @@
 <div *ngIf="searchTerm?.length>2">
   <div *ngIf="searchResult$">
 
-    <ion-card *ngFor="let item of searchResult$ | async">
+    <ion-card *ngFor="let item of searchResult$ | async" (click)="reserve(item.IDofBook)">
     <div *ngIf="item.typeOf=='001'">
       <img *ngIf="deneme(item.IDofBook)" [src]="deneme(item.IDofBook)" style="height: 150px;width: 150px;">
       <ion-card-header> 

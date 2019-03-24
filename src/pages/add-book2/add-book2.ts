@@ -335,7 +335,9 @@ export class AddBook2Page {
    }else{
 		
 	}
-  this.navCtrl.setRoot(AddBookPage);
+  this.navCtrl.setRoot(AddBookPage,{
+    IDofLibrary : this.value
+  });
 }
 
 
