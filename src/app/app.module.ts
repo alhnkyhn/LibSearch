@@ -19,6 +19,8 @@ import { AcceptPage} from '../pages/accept/accept';
 import { ApplicationDetailPage } from '../pages/application-detail/application-detail';
 import { SearchPage } from '../pages/search/search';
 import { LoanPage } from '../pages/loan/loan';
+import { LibraryMapPage } from '../pages/library-map/library-map';
+import { SetMapPage } from '../pages/set-map/set-map';
 
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuth } from 'angularfire2/auth';
@@ -29,6 +31,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { CONFIG_OF_FIREBASE } from '../config';
 import { DataProvider } from '../providers/data/data';
+import {GoogleMapComponent} from '../components/google-map/google-map' ;
+
 
 @NgModule({
   declarations: [
@@ -48,7 +52,11 @@ import { DataProvider } from '../providers/data/data';
     ApplicationDetailPage,
     AcceptPage,
     SearchPage,
-    LoanPage
+    LoanPage,
+    GoogleMapComponent,
+    LibraryMapPage,
+    SetMapPage
+
   ],
   imports: [
     BrowserModule,
@@ -74,7 +82,9 @@ import { DataProvider } from '../providers/data/data';
     ApplicationDetailPage,
     AcceptPage,
     SearchPage,
-    LoanPage
+    LoanPage,
+    LibraryMapPage,
+    SetMapPage
   ],
   providers: [
     StatusBar,

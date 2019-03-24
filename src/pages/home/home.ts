@@ -8,6 +8,7 @@ import { SearchPage } from '../search/search';
 import { ApplicationDetailPage } from '../application-detail/application-detail';
 import { LoanPage } from '../loan/loan';
 import { IntroPage } from '../intro/intro';
+import { LibraryMapPage } from '../library-map/library-map';
 
 import * as firebase from 'firebase/app';
 
@@ -71,6 +72,10 @@ export class HomePage {
       this.navCtrl.push(LoanPage , {
         eMail : this.valueOfEmail
       });
+    }
+
+    navigateToLibraryMapPage(){
+      this.navCtrl.push(LibraryMapPage);
     }
 
     logOut(){

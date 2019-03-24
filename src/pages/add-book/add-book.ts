@@ -8,6 +8,7 @@ import { AddLibraryPage } from '../add-library/add-library';
 import { AddBook2Page } from '../add-book2/add-book2';
 import { AdminPage } from '../admin/admin';
 import { AcceptPage} from '../accept/accept';
+import { SetMapPage } from '../set-map/set-map';
 
 @Component({
   selector: 'page-add-book',
@@ -53,6 +54,14 @@ export class AddBookPage {
   navigateToAcceptPage(){
 
     this.navCtrl.push(AcceptPage , {
+      IDofLibrary : this.value
+    });
+    
+  }
+
+  navigateToSetMapPage(){
+
+    this.navCtrl.push(SetMapPage,{
       IDofLibrary : this.value
     });
     

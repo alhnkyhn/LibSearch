@@ -19,8 +19,12 @@ import { ApplicationPage } from '../pages/application/application';
 import { SearchPage } from '../pages/search/search';
 import { ApplicationDetailPage } from '../pages/application-detail/application-detail';
 import { LoanPage } from '../pages/loan/loan';
+import { LibraryMapPage } from '../pages/library-map/library-map';
+import { SetMapPage } from '../pages/set-map/set-map';
 
 import { timer } from 'rxjs/observable/timer'
+
+
 
 @Component({
   templateUrl: 'app.html'
