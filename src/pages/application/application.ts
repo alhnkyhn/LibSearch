@@ -20,7 +20,7 @@ export class ApplicationPage {
 	preInformation : boolean;
 	valueOfCity : any ;
 	values: Observable<any>;
-	selectedLibrary : string;
+  selectedLibrary : string;
 	selectedLibrarysName : string;
 	isCitySelected : boolean;
 	closeToCards : boolean;
@@ -53,7 +53,6 @@ export class ApplicationPage {
   }
 
   getCity(){
-  	console.log( + this.valueOfCity)
   	this.values = this.database.list('Libraries/').valueChanges();
   	this.isCitySelected = true;
   }

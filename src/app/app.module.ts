@@ -32,6 +32,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { CONFIG_OF_FIREBASE } from '../config';
 import { DataProvider } from '../providers/data/data';
 import {GoogleMapComponent} from '../components/google-map/google-map' ;
+import {DisplayMapComponent} from '../components/display-map/display-map' ;
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import {GoogleMapComponent} from '../components/google-map/google-map' ;
     SearchPage,
     LoanPage,
     GoogleMapComponent,
+    DisplayMapComponent,
     LibraryMapPage,
     SetMapPage
 

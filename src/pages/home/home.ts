@@ -75,7 +75,9 @@ export class HomePage {
     }
 
     navigateToLibraryMapPage(){
-      this.navCtrl.push(LibraryMapPage);
+      this.navCtrl.push(LibraryMapPage , {
+        eMail : this.valueOfEmail
+      });
     }
 
     logOut(){

@@ -33,9 +33,6 @@ export class ApplicationDetailPage {
       this.i = 0;
       this.j = 0;
 
-
-      
-
 	this.database.list('Libraries/')
    		.valueChanges().subscribe((data) => {
 

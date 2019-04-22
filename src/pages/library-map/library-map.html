@@ -1,9 +1,3 @@
-<!--
-  Generated template for the LibraryMapPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
@@ -14,6 +8,26 @@
 
 
 <ion-content padding>
-	<google-map> </google-map>
+	<div *ngIf = "showIt"> 
+		Konumunu görüntülemek istediğiniz kütüphaneyi seçiniz.<br>
+		Not: Yanlızca üye olduğunuz kütüphaneleri görebilirsiniz.
+		<div *ngFor="let item of arrayToShow">
+			<div  *ngIf="item.length>8">
 
+		    
+		      <ion-card (click)="getLocation(item.substring(0,6))">
+
+		        <ion-card-header>
+		          Kütüphane No : {{item.substring(0,6)}} <br>
+		          Kütüphanenin Adı: {{item.substring(6,item.length)}}
+				
+		        </ion-card-header>
+
+		      </ion-card>
+		    </div>
+		</div>
+	</div>
+<div *ngIf = "dontShowIt">
+    <google-map> </google-map>
+</div>
 </ion-content>

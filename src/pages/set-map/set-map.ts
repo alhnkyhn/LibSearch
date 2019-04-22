@@ -1,7 +1,7 @@
 import { Component} from '@angular/core';
 import { IonicPage, NavController, NavParams ,Events} from 'ionic-angular';
-import {GoogleMapComponent} from '../../components/google-map/google-map'
-import {AddBookPage} from '../add-book/add-book'
+import {GoogleMapComponent} from '../../components/google-map/google-map';
+import {AddBookPage} from '../add-book/add-book';
 @IonicPage()
 @Component({
   selector: 'page-set-map',
@@ -18,7 +18,6 @@ export class SetMapPage {
 
   }
   ionViewDidLoad(){
-    console.log("Saldım",this.value);
     this.event.publish('IDofLibrary' , this.value);
   }
 
